@@ -55,18 +55,18 @@ function toggleStyle(id){
 
 }
 mainContainer.addEventListener("click",function(event){
-    const checkInterview = event.target.closest('#interview-btn');
-    const checkRejected = event.target.closest('#rejected-btn');
+    const checkInterview = event.target.closest('.interview-btn');
+    const checkRejected = event.target.closest('.rejected-btn');
 
     
     if(checkInterview){
-     const parentNode = event.target.parentNode.parentNode;
-     const companyName = parentNode.querySelector('#company-name').innerText;
-     const jobDesignation = parentNode.querySelector('#job-designation').innerText;
-     const jobSalary = parentNode.querySelector('#job-salary').innerText;
-     const cardStatus = parentNode.querySelector('#card-status').innerText;
-     const notes = parentNode.querySelector('#notes').innerText;
-     parentNode.querySelector('#card-status').innerText = "Interview"
+     const parentNode = event.target.closest('.card-body');
+     const companyName = parentNode.querySelector('.company-name').innerText;
+     const jobDesignation = parentNode.querySelector('.job-designation').innerText;
+     const jobSalary = parentNode.querySelector('.job-salary').innerText;
+     const cardStatus = parentNode.querySelector('.card-status').innerText;
+     const notes = parentNode.querySelector('.notes').innerText;
+     parentNode.querySelector('.card-status').innerText = "Interview"
 
      const cardInfo = {
         companyName,
@@ -83,18 +83,19 @@ mainContainer.addEventListener("click",function(event){
         interviewList.push(cardInfo);
         calculateCount();
     }
+    
 
-    console.log(cardInfo)
+    
 
     }
-    else if(checkRejected){
-    const parentNode = event.target.parentNode.parentNode;
-     const companyName = parentNode.querySelector('#company-name').innerText;
-     const jobDesignation = parentNode.querySelector('#job-designation').innerText;
-     const jobSalary = parentNode.querySelector('#job-salary').innerText;
-     const cardStatus = parentNode.querySelector('#card-status').innerText;
-     const notes = parentNode.querySelector('#notes').innerText;
-     parentNode.querySelector('#card-status').innerText = "Rejected"
+   else if(checkRejected){
+    const parentNode = event.target.closest('.card-body');
+     const companyName = parentNode.querySelector('.company-name').innerText;
+     const jobDesignation = parentNode.querySelector('.job-designation').innerText;
+     const jobSalary = parentNode.querySelector('.job-salary').innerText;
+     const cardStatus = parentNode.querySelector('.card-status').innerText;
+     const notes = parentNode.querySelector('.notes').innerText;
+     parentNode.querySelector('.card-status').innerText = "Rejected"
 
      const cardInfo = {
         companyName,
@@ -110,8 +111,19 @@ mainContainer.addEventListener("click",function(event){
     if(!exist){
         rejectedList.push(cardInfo);
         calculateCount();
+       
+
     }
+
     }
+     if(!filterSection.classList.contains('hidden')){
+            if(interviewFilterbtn.classList.contains('bg-sky-500')){
+                renderInterviewCard();
+            }
+            if(rejectFilterBtn.classList.contains('bg-sky-500')){
+                renderRejectedCard();
+            }
+        }
      
 
 
@@ -126,22 +138,22 @@ function renderInterviewCard(){
         p-6 shadow-sm`
         div.innerHTML = `
         <div>
-                <h2 id="company-name" class="font-bold text-2xl">${interview.companyName}</h2>
-                <h3 id="job-designation" class="font-normal text-xl text-gray-400 mb-4">${interview.jobDesignation}</h3>
-                <p id="job-salary" class="mb-3 text-gray-600">${interview.jobSalary}</p>
+                <h2 class="company-name font-bold text-2xl">${interview.companyName}</h2>
+                <h3 class="job-designation font-normal text-xl text-gray-400 mb-4">${interview.jobDesignation}</h3>
+                <p class="job-salary mb-3 text-gray-600">${interview.jobSalary}</p>
                 
-                <button id="card-status" class="bg-gray-200 text-gray-700 px-3 py-1 rounded-sm mb-4 text-sm font-medium">
+                <button class="card-status bg-gray-200 text-gray-700 px-3 py-1 rounded-sm mb-4 text-sm font-medium">
                     ${interview.cardStatus}
                 </button>
-                <p id="notes" class="text-sm mb-4 text-gray-600">
+                <p class="notes text-sm mb-4 text-gray-600">
                     ${interview.notes}
                 </p>
 
                 <div class="flex flex-row gap-4 mt-2">
-                    <button id="interview-btn" class="border border-green-500 text-green-500 px-6 py-2 cursor-pointer font-bold rounded hover:bg-green-50 transition-colors">
+                    <button class="interview-btn border border-green-500 text-green-500 px-6 py-2 cursor-pointer font-bold rounded hover:bg-green-50 transition-colors">
                         INTERVIEW
                     </button>
-                    <button id="rejected-btn" class="border border-red-700 text-red-700 px-6 py-2 cursor-pointer font-bold rounded hover:bg-red-50 transition-colors">
+                    <button class="rejected-btn border border-red-700 text-red-700 px-6 py-2 cursor-pointer font-bold rounded hover:bg-red-50 transition-colors">
                         REJECTED
                     </button>
                 </div>
@@ -152,6 +164,7 @@ function renderInterviewCard(){
 
 
 }
+
 function renderRejectedCard(){
     filterSection.innerHTML = '';
     for(let interview of rejectedList){
@@ -160,22 +173,22 @@ function renderRejectedCard(){
         p-6 shadow-sm`
         div.innerHTML = `
         <div>
-                <h2 id="company-name" class="font-bold text-2xl">${interview.companyName}</h2>
-                <h3 id="job-designation" class="font-normal text-xl text-gray-400 mb-4">${interview.jobDesignation}</h3>
-                <p id="job-salary" class="mb-3 text-gray-600">${interview.jobSalary}</p>
+                <h2 class="company-name font-bold text-2xl">${interview.companyName}</h2>
+                <h3 class="job-designation font-normal text-xl text-gray-400 mb-4">${interview.jobDesignation}</h3>
+                <p class="job-salary mb-3 text-gray-600">${interview.jobSalary}</p>
                 
-                <button id="card-status" class="bg-gray-200 text-gray-700 px-3 py-1 rounded-sm mb-4 text-sm font-medium">
+                <button class="card-status bg-gray-200 text-gray-700 px-3 py-1 rounded-sm mb-4 text-sm font-medium">
                     ${interview.cardStatus}
                 </button>
-                <p id="notes" class="text-sm mb-4 text-gray-600">
+                <p class="notes text-sm mb-4 text-gray-600">
                     ${interview.notes}
                 </p>
 
                 <div class="flex flex-row gap-4 mt-2">
-                    <button id="interview-btn" class="border border-green-500 text-green-500 px-6 py-2 cursor-pointer font-bold rounded hover:bg-green-50 transition-colors">
+                    <button class="interview-btn border border-green-500 text-green-500 px-6 py-2 cursor-pointer font-bold rounded hover:bg-green-50 transition-colors">
                         INTERVIEW
                     </button>
-                    <button id="rejected-btn" class="border border-red-700 text-red-700 px-6 py-2 cursor-pointer font-bold rounded hover:bg-red-50 transition-colors">
+                    <button class="rejected-btn border border-red-700 text-red-700 px-6 py-2 cursor-pointer font-bold rounded hover:bg-red-50 transition-colors">
                         REJECTED
                     </button>
                 </div>
