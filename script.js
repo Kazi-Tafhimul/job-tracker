@@ -34,7 +34,26 @@ function toggleStyle(id){
 }
 mainContainer.addEventListener("click",function(event){
      const parentNode = event.target.parentNode.parentNode;
+     const companyName = parentNode.querySelector('#company-name').innerText;
+     const jobDesignation = parentNode.querySelector('#job-designation').innerText;
+     const jobSalary = parentNode.querySelector('#job-salary').innerText;
+     const cardStatus = parentNode.querySelector('#card-status').innerText;
+     const notes = parentNode.querySelector('#notes').innerText;
+
+     const cardInfo = {
+        companyName,
+        jobDesignation,
+        jobSalary,
+        cardStatus,
+        notes
+     }
+    console.log(cardInfo)
+    const exist =  interviewList.find(item=> item.companyName == cardInfo.companyName)
+    if(!exist){
+        interviewList.push(cardInfo);
+    }
      
+
 
 
 })
