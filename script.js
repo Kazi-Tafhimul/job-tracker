@@ -8,13 +8,15 @@ let interviewFilterbtn = document.getElementById("interview-filter-btn");
 let rejectFilterBtn = document.getElementById("reject-filter-btn");
 const allCard = document.getElementById("all-card");
 const mainContainer = document.querySelector('main');
+const filterSection = document.getElementById("filtered-section");
+
 
 function calculateCount(){
     totalCnt.innerText = allCard.children.length;
     interviewCnt.innerText = interviewList.length;
     rejectedCnt.innerText = rejectedList.length;
 }
-calculateCount();
+
 function toggleStyle(id){
     allFilterBtn.classList.remove('bg-sky-500', 'text-white')
     interviewFilterbtn.classList.remove('bg-sky-500', 'text-white');
@@ -28,32 +30,160 @@ function toggleStyle(id){
     const selected = document.getElementById(id);
     selected.classList.remove('bg-white','text-black');
     selected.classList.add('bg-sky-500','text-white');
+    if(id=='interview-filter-btn'){
+        allCard.classList.add('hidden')
+        filterSection.classList.remove('hidden')
+        renderInterviewCard();
+        
+    }
+    
+    else if(id=='reject-filter-btn'){
+        allCard.classList.add('hidden');
+        filterSection.classList.remove('hidden')
+
+        renderRejectedCard();
+
+
+    }
+    else{
+        allCard.classList.remove('hidden')
+        filterSection.classList.add('hidden')
+
+    }
 
     
 
 }
 mainContainer.addEventListener("click",function(event){
+    const checkInterview = event.target.closest('#interview-btn');
+    const checkRejected = event.target.closest('#rejected-btn');
+
+    
+    if(checkInterview){
      const parentNode = event.target.parentNode.parentNode;
      const companyName = parentNode.querySelector('#company-name').innerText;
      const jobDesignation = parentNode.querySelector('#job-designation').innerText;
      const jobSalary = parentNode.querySelector('#job-salary').innerText;
      const cardStatus = parentNode.querySelector('#card-status').innerText;
      const notes = parentNode.querySelector('#notes').innerText;
+     parentNode.querySelector('#card-status').innerText = "Interview"
 
      const cardInfo = {
         companyName,
         jobDesignation,
         jobSalary,
-        cardStatus,
+        cardStatus:'Interview',
         notes
      }
-    console.log(cardInfo)
-    const exist =  interviewList.find(item=> item.companyName == cardInfo.companyName)
+     rejectedList = rejectedList.filter(item=>item.companyName!=cardInfo.companyName);
+    
+     const exist =  interviewList.find(item=> item.companyName == cardInfo.companyName)
+      
     if(!exist){
         interviewList.push(cardInfo);
+        calculateCount();
+    }
+
+    console.log(cardInfo)
+
+    }
+    else if(checkRejected){
+    const parentNode = event.target.parentNode.parentNode;
+     const companyName = parentNode.querySelector('#company-name').innerText;
+     const jobDesignation = parentNode.querySelector('#job-designation').innerText;
+     const jobSalary = parentNode.querySelector('#job-salary').innerText;
+     const cardStatus = parentNode.querySelector('#card-status').innerText;
+     const notes = parentNode.querySelector('#notes').innerText;
+     parentNode.querySelector('#card-status').innerText = "Rejected"
+
+     const cardInfo = {
+        companyName,
+        jobDesignation,
+        jobSalary,
+        cardStatus:'Rejected',
+        notes
+     }
+     interviewList = interviewList.filter(item=>item.companyName!=cardInfo.companyName);
+    
+     const exist = rejectedList.find(item=> item.companyName == cardInfo.companyName)
+      
+    if(!exist){
+        rejectedList.push(cardInfo);
+        calculateCount();
+    }
     }
      
 
 
 
 })
+
+function renderInterviewCard(){
+    filterSection.innerHTML = '';
+    for(let interview of interviewList){
+        let div = document.createElement('div');
+        div.className = `card-body flex justify-between items-start bg-white rounded-md 
+        p-6 shadow-sm`
+        div.innerHTML = `
+        <div>
+                <h2 id="company-name" class="font-bold text-2xl">${interview.companyName}</h2>
+                <h3 id="job-designation" class="font-normal text-xl text-gray-400 mb-4">${interview.jobDesignation}</h3>
+                <p id="job-salary" class="mb-3 text-gray-600">${interview.jobSalary}</p>
+                
+                <button id="card-status" class="bg-gray-200 text-gray-700 px-3 py-1 rounded-sm mb-4 text-sm font-medium">
+                    ${interview.cardStatus}
+                </button>
+                <p id="notes" class="text-sm mb-4 text-gray-600">
+                    ${interview.notes}
+                </p>
+
+                <div class="flex flex-row gap-4 mt-2">
+                    <button id="interview-btn" class="border border-green-500 text-green-500 px-6 py-2 cursor-pointer font-bold rounded hover:bg-green-50 transition-colors">
+                        INTERVIEW
+                    </button>
+                    <button id="rejected-btn" class="border border-red-700 text-red-700 px-6 py-2 cursor-pointer font-bold rounded hover:bg-red-50 transition-colors">
+                        REJECTED
+                    </button>
+                </div>
+            </div>`
+            filterSection.appendChild(div)
+    }
+
+
+
+}
+function renderRejectedCard(){
+    filterSection.innerHTML = '';
+    for(let interview of rejectedList){
+        let div = document.createElement('div');
+        div.className = `card-body flex justify-between items-start bg-white rounded-md 
+        p-6 shadow-sm`
+        div.innerHTML = `
+        <div>
+                <h2 id="company-name" class="font-bold text-2xl">${interview.companyName}</h2>
+                <h3 id="job-designation" class="font-normal text-xl text-gray-400 mb-4">${interview.jobDesignation}</h3>
+                <p id="job-salary" class="mb-3 text-gray-600">${interview.jobSalary}</p>
+                
+                <button id="card-status" class="bg-gray-200 text-gray-700 px-3 py-1 rounded-sm mb-4 text-sm font-medium">
+                    ${interview.cardStatus}
+                </button>
+                <p id="notes" class="text-sm mb-4 text-gray-600">
+                    ${interview.notes}
+                </p>
+
+                <div class="flex flex-row gap-4 mt-2">
+                    <button id="interview-btn" class="border border-green-500 text-green-500 px-6 py-2 cursor-pointer font-bold rounded hover:bg-green-50 transition-colors">
+                        INTERVIEW
+                    </button>
+                    <button id="rejected-btn" class="border border-red-700 text-red-700 px-6 py-2 cursor-pointer font-bold rounded hover:bg-red-50 transition-colors">
+                        REJECTED
+                    </button>
+                </div>
+            </div>`
+            filterSection.appendChild(div)
+    }
+
+
+
+}
+
