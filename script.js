@@ -67,6 +67,13 @@ mainContainer.addEventListener("click",function(event){
      const cardStatus = parentNode.querySelector('.card-status').innerText;
      const notes = parentNode.querySelector('.notes').innerText;
      parentNode.querySelector('.card-status').innerText = "Interview"
+     const allCards = allCard.querySelectorAll('.card-body');
+     allCards.forEach(card=>{
+        const cardName = card.querySelector('.company-name').innerText;
+        if(cardName === companyName){
+            card.querySelector('.card-status').innerText = "Interview";
+        }
+     })
 
      const cardInfo = {
         companyName,
@@ -96,6 +103,14 @@ mainContainer.addEventListener("click",function(event){
      const cardStatus = parentNode.querySelector('.card-status').innerText;
      const notes = parentNode.querySelector('.notes').innerText;
      parentNode.querySelector('.card-status').innerText = "Rejected"
+     const allCards = allCard.querySelectorAll('.card-body');
+     allCards.forEach(card=>{
+        const cardName = card.querySelector('.company-name').innerText;
+        if(cardName === companyName){
+            card.querySelector('.card-status').innerText = "Rejected";
+        }
+     })
+
 
      const cardInfo = {
         companyName,
