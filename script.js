@@ -62,10 +62,22 @@ mainContainer.addEventListener("click",function(event){
     if(checkDelete){
         const parentNode = event.target.closest('.card-body');
         const companyName = parentNode.querySelector('.company-name').innerText;
-        parentNode.remove();
+
+        
         interviewList = interviewList.filter(item=>item.companyName!=companyName);
         rejectedList = rejectedList.filter(item=>item.companyName!=companyName);
+        const allCards = allCard.querySelectorAll('.card-body');
+        allCards.forEach(card=>{
+            if(card.querySelector('.company-name').innerText===companyName){
+                card.remove();
+            }
+        })
+        parentNode.remove();
+
         calculateCount();
+        if(allCard.children.length ===0){
+            allCard.innerHTML = emptySection();
+        }
 
     }
 
