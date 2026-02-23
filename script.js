@@ -57,9 +57,20 @@ function toggleStyle(id){
 mainContainer.addEventListener("click",function(event){
     const checkInterview = event.target.closest('.interview-btn');
     const checkRejected = event.target.closest('.rejected-btn');
+    const checkDelete = event.target.closest('.delete-btn');
+    
+    if(checkDelete){
+        const parentNode = event.target.closest('.card-body');
+        const companyName = parentNode.querySelector('.company-name').innerText;
+        parentNode.remove();
+        interviewList = interviewList.filter(item=>item.companyName!=companyName);
+        rejectedList = rejectedList.filter(item=>item.companyName!=companyName);
+        calculateCount();
+
+    }
 
     
-    if(checkInterview){
+    else if(checkInterview){
      const parentNode = event.target.closest('.card-body');
      const companyName = parentNode.querySelector('.company-name').innerText;
      const jobDesignation = parentNode.querySelector('.job-designation').innerText;
@@ -152,28 +163,18 @@ function emptySection(){
             <p class="font-normal text-[16px] mt-2">Check back soon for new job opportunities</p>
 `
 }
-
-function renderInterviewCard(){
-    filterSection.innerHTML = '';
-    if(interviewList.length === 0){
-        filterSection.innerHTML = emptySection();
-        return;
-    }
-    for(let interview of interviewList){
-        let div = document.createElement('div');
-        div.className = `card-body flex justify-between items-start bg-white rounded-md 
-        p-6 shadow-sm`
-        div.innerHTML = `
-        <div>
-                <h2 class="company-name font-bold text-2xl">${interview.companyName}</h2>
-                <h3 class="job-designation font-normal text-xl text-gray-400 mb-4">${interview.jobDesignation}</h3>
-                <p class="job-salary mb-3 text-gray-600">${interview.jobSalary}</p>
+function commonHtmlPart(data){
+    return `
+    <div>
+                <h2 class="company-name font-bold text-2xl">${data.companyName}</h2>
+                <h3 class="job-designation font-normal text-xl text-gray-400 mb-4">${data.jobDesignation}</h3>
+                <p class="job-salary mb-3 text-gray-600">${data.jobSalary}</p>
                 
                 <button class="card-status bg-gray-200 text-gray-700 px-3 py-1 rounded-sm mb-4 text-sm font-medium">
-                    ${interview.cardStatus}
+                    ${data.cardStatus}
                 </button>
                 <p class="notes text-sm mb-4 text-gray-600">
-                    ${interview.notes}
+                    ${data.notes}
                 </p>
 
                 <div class="flex flex-row gap-4 mt-2">
@@ -184,8 +185,27 @@ function renderInterviewCard(){
                         REJECTED
                     </button>
                 </div>
-            </div>`
-            filterSection.appendChild(div)
+            </div>
+             <div>
+                <button class="delete-btn flex items-center justify-center w-10 h-10 border-2 rounded-full border-gray-300 text-gray-400 hover:border-red-500 hover:text-red-500 transition-all cursor-pointer">
+                    <i class="fa-solid fa-trash-can"></i>
+                </button>
+            </div>
+    `
+}
+function renderInterviewCard(){
+    filterSection.innerHTML = '';
+    if(interviewList.length === 0){
+        filterSection.innerHTML = emptySection();
+        return;
+    }
+    for(let interview of interviewList){
+        let div = document.createElement('div');
+        div.className = `card-body flex justify-between items-start bg-white rounded-md 
+        p-6 shadow-sm`
+        div.innerHTML = commonHtmlPart(interview);
+        
+        filterSection.appendChild(div)
     }
 
 
@@ -199,33 +219,13 @@ function renderRejectedCard(){
         filterSection.innerHTML = emptySection();
         return;
     }
-    for(let interview of rejectedList){
+    for(let rejection of rejectedList){
         let div = document.createElement('div');
         div.className = `card-body flex justify-between items-start bg-white rounded-md 
         p-6 shadow-sm`
-        div.innerHTML = `
-        <div>
-                <h2 class="company-name font-bold text-2xl">${interview.companyName}</h2>
-                <h3 class="job-designation font-normal text-xl text-gray-400 mb-4">${interview.jobDesignation}</h3>
-                <p class="job-salary mb-3 text-gray-600">${interview.jobSalary}</p>
-                
-                <button class="card-status bg-gray-200 text-gray-700 px-3 py-1 rounded-sm mb-4 text-sm font-medium">
-                    ${interview.cardStatus}
-                </button>
-                <p class="notes text-sm mb-4 text-gray-600">
-                    ${interview.notes}
-                </p>
-
-                <div class="flex flex-row gap-4 mt-2">
-                    <button class="interview-btn border border-green-500 text-green-500 px-6 py-2 cursor-pointer font-bold rounded hover:bg-green-50 transition-colors">
-                        INTERVIEW
-                    </button>
-                    <button class="rejected-btn border border-red-700 text-red-700 px-6 py-2 cursor-pointer font-bold rounded hover:bg-red-50 transition-colors">
-                        REJECTED
-                    </button>
-                </div>
-            </div>`
-            filterSection.appendChild(div)
+        div.innerHTML = commonHtmlPart(rejection);
+       
+        filterSection.appendChild(div)
     }
 
 
