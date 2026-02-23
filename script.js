@@ -144,9 +144,21 @@ mainContainer.addEventListener("click",function(event){
 
 
 })
+function emptySection(){
+    return `
+     <div class="flex flex-col w-11/12 bg-white justify-center items-center p-10 mx-auto">
+            <img src="jobs.png" alt="">
+            <p class="font-semibold text-[24px] mt-2">No jobs available</p>
+            <p class="font-normal text-[16px] mt-2">Check back soon for new job opportunities</p>
+`
+}
 
 function renderInterviewCard(){
     filterSection.innerHTML = '';
+    if(interviewList.length === 0){
+        filterSection.innerHTML = emptySection();
+        return;
+    }
     for(let interview of interviewList){
         let div = document.createElement('div');
         div.className = `card-body flex justify-between items-start bg-white rounded-md 
@@ -182,6 +194,11 @@ function renderInterviewCard(){
 
 function renderRejectedCard(){
     filterSection.innerHTML = '';
+    
+    if(rejectedList.length === 0){
+        filterSection.innerHTML = emptySection();
+        return;
+    }
     for(let interview of rejectedList){
         let div = document.createElement('div');
         div.className = `card-body flex justify-between items-start bg-white rounded-md 
