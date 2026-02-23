@@ -4,6 +4,7 @@ let totalCnt = document.getElementById("total-count");
 let interviewCnt = document.getElementById("interview-count");
 let rejectedCnt = document.getElementById("rejected-count");
 let allFilterBtn = document.getElementById("all-filter-btn");
+let jobNumberShow = document.getElementById('job-number-show');
 let interviewFilterbtn = document.getElementById("interview-filter-btn");
 let rejectFilterBtn = document.getElementById("reject-filter-btn");
 const allCard = document.getElementById("all-card");
@@ -12,9 +13,31 @@ const filterSection = document.getElementById("filtered-section");
 
 
 function calculateCount(){
-    totalCnt.innerText = allCard.children.length;
+    let count = allCard.querySelectorAll('.card-body').length;
+    
+    totalCnt.innerText = count;
     interviewCnt.innerText = interviewList.length;
     rejectedCnt.innerText = rejectedList.length;
+    if(interviewFilterbtn.classList.contains('bg-sky-500')){
+        jobNumberShow.innerText = `${interviewList.length} out of ${count} jobs`;
+
+    }
+    else if(rejectFilterBtn.classList.contains('bg-sky-500')){
+        jobNumberShow.innerText = `${rejectedList.length} out of ${count} jobs`;
+    }
+    else{
+        if(count==0){
+            jobNumberShow.innerText = 0 + ' job';
+            
+        }
+        else{
+
+            jobNumberShow.innerText = count + ' jobs';
+        }
+
+    }
+
+
 }
 
 function toggleStyle(id){
@@ -50,6 +73,7 @@ function toggleStyle(id){
         filterSection.classList.add('hidden')
 
     }
+    calculateCount();
 
     
 
@@ -243,4 +267,5 @@ function renderRejectedCard(){
 
 
 }
+calculateCount();
 
